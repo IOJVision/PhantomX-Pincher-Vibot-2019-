@@ -158,6 +158,8 @@ __Real arm__:
 * To move the arm to all the necessary point is very easy if we do by manually and less time taken for the calibration process. Start with uncheck all the servo, to let the motor power off so that we can move it manually but make sure the gripper is widely open and use the right section of the gripper to hit the 4-calibration point. 
 
 * Start with move it to the first point then press enter, continue until the 4th point. 
+
+
 __First Point__:
 
 <p align="center">
