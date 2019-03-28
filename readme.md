@@ -216,4 +216,121 @@ __Fourth Point__:
 * Run the static transform publisher output and As long as this command runs, the static_transform_publisher will publish the transform between the arm frame and the kinect frame. If you move the physical camera, you will need to recalibrate again
      
           rosrun tf static_transform_publisher 0.366333 0.227789 0.984579 0.436052 0.44573 -0.573806 0.530971 /base_link /camera_link 100
+
+
+
+## 4. Step by step Pick and Place Demo via Simulator 
+
+* Start the MoveIt from turtlebot arm package in the simulation mode(by default, the simulation is false)
           
+          roslaunch turtlebot_arm_moveit_config turtlebot_arm_moveit.launch sim:=true –-screen
+          
+* After the commad has been launch, you will see the PhantomX Pincher robot arm model in the RViz. If it show other robot arm model, please change the environment variable from turtlebot_arm1 to pincher.
+
+<p align="center">
+<img src="https://github.com/IOJVision/PhantomX-Pincher-Vibot-2019-/blob/master/Images/MoveIt!/Screenshot%20from%202019-03-10%2021:21:35.png" align ="middle" width="60%" height="60%" title="rvizstartup">
+</p>
+
+* After that start the pick and place demo by running the below line in the new terminal. 
+
+          rosrun turtlebot_arm_moveit_demos pick_and_place.py
+          
+<p align="center">
+<img src="https://github.com/IOJVision/PhantomX-Pincher-Vibot-2019-/blob/master/Images/MoveIt!/Screenshot%20from%202019-03-28%2012-51-06.png" align ="middle" width="60%" height="60%" title="rvizstartup">
+</p>
+
+
+## 5. Step by step Pick and Place Demo via Real Arm 
+
+* For the real arm, we need to use calibration point as we did in above then use the same set up as that cause we do not want to calibrate again if we move the camera or change the set up.
+
+* Firstly, we need to have a cube type of object with dimension of 2 cm or 2.5 cm because our gripper is only capable to grab until 3 cm. We can change the dimension of the box inside the launch file and also if our table is not aligned to the base of the arm, we can set that also inside the launch file. 
+
+          <launch>
+
+       <!--  ************* Arm bringup stuff ************* -->
+
+       <include file="$(find turtlebot_arm_bringup)/launch/arm.launch" />
+
+       <node name="arbotix_gui" pkg="arbotix_python" type="arbotix_gui" output="screen"/>
+
+
+       <!--  ************* Moveit config stuff *************  -->
+
+       <!-- Load the URDF, SRDF and other .yaml configuration files on the param server -->
+       <include file="$(find turtlebot_arm_moveit_config)/launch/planning_context.launch">
+         <arg name="load_robot_description" value="true"/>
+       </include>
+
+       <!-- Run the main MoveIt executable to provide move groups -->
+       <include file="$(find turtlebot_arm_moveit_config)/launch/move_group.launch">
+         <arg name="allow_trajectory_execution" value="true"/>  
+         <arg name="fake_execution" value="false"/>
+         <arg name="info" value="true"/>
+       </include>
+
+
+       <!--  ************* Kinect bringup stuff ************* -->
+       <include file="$(find freenect_launch)/launch/freenect.launch" />s
+
+
+
+       <!--  ************* Block manipulation stuff ************* -->
+       <include file="$(find turtlebot_arm_block_manipulation)/launch/block_manipulation.launch" />
+
+       <node name="block_manipulation_demo" pkg="turtlebot_arm_block_manipulation" type="block_manipulation_demo" output="screen" >
+         <param name="arm_link" value="/arm_base_link" />
+         <param name="gripper_open" value="0.1" />
+         <param name="gripper_closed" value="0.001" /> 
+         <param name="z_up" value="0.1" />
+         <param name="table_height" value="-0.03" />
+          <param name="block_size" value="0.020" /> in here we have to change the size of the object
+         <!--param name="target_x" value="" /-->
+         <!--param name="target_y" value="" /-->
+       </node>
+
+       <node name="rviz" pkg="rviz" type="rviz" args="-d $(find turtlebot_arm_block_manipulation)/demo/block_manipulation_demo.rviz" />
+
+       <node pkg="tf" type="static_transform_publisher" name="static_transform_publisher" args="0.552972 0.0311763 1.01794 -0.485351 0.0823443 0.864462 0.101775 /base_link /camera_link 100"/> THIS IS THE CALIBRATION POINT WE INCLUDED IN THE LAUNCH FILE
+
+          </launch>
+          
+* For now, the code is only capable to detect green cube only. 
+* To start the block detection, launch
+     
+           roslaunch turtlebot_arm_block_manipulation block_manip_complete.launch
+           
+   If our calibration is already good then we do not want to change the position, we can add permanently in our launch file.
+
+* Inside the launch file that we launch in step 4, it is included with the arm bringup, camera bringup and also rviz moveit bringup. 
+* After all of the necessary application launch, run this command to start object detetction and demonstration of pick and place
+
+          rostopic pub -r 1000 /relay/robot_status2 std_msgs/String "vsdone"
+          
+* Demonstration video for:
+     [2cm cube](https://github.com/IOJVision/PhantomX-Pincher-Vibot-2019-/blob/master/Video/Pick%20and%20Place/2cmCube.m4v)
+     [2.5cm cube](https://github.com/IOJVision/PhantomX-Pincher-Vibot-2019-/blob/master/Video/Pick%20and%20Place/3cmCUbe.m4v)
+     
+     
+
+          
+## 6. Face Detector with The Arm Pose 
+* Before starting, make sure you have the rbx1 vision package from pirobot
+     
+         cd ~/ros/indigo/catkin_ws/src
+         git clone https://github.com/IOJVision/rbx1.git
+         cd .. && catkin_make
+ 
+* First, run this command of bringup the arm, moveit rviz and kinect
+
+          roslaunch turtlebot_arm_bringup arm_moveit.launch
+         
+* Then run the face detector
+
+          roslaunch rbx1_vision face_tracker2.launch 
+          
+* Lastly, run the script
+     
+          rosrun turtlebot_arm_moveit_demos head_tracker.py 
+          
+* When there is face detected, the arm will pose a waving pose and when there is no face, the arm will be in resting. 
