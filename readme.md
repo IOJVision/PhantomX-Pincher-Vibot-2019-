@@ -136,11 +136,11 @@ __Real arm__:
 <img src="https://github.com/IOJVision/PhantomX-Pincher-Vibot-2019-/blob/master/Images/Calibration/Screenshot%20from%202019-03-25%2014:33:05.png" align ="middle" width="60%" height="60%" title="checkerboard">
 </p>
 
-     __The complete checkerboard must be in the kinect field of view __:
+     The complete checkerboard must be in the kinect field of view :
      
-     __Then, manually try to move the arm to make sure it can reach all the point in the checkerboard. __:
+     Then, manually try to move the arm to make sure it can reach all the point in the checkerboard.:
      
-     __Additional info, the checkerboard must be on the same level of the arm base. __:
+     Additional info, the checkerboard must be on the same level of the arm base. :
      
 * After all the test and set up has been done correctly, run the calibration program
           
