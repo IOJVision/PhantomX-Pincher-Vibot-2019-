@@ -151,7 +151,7 @@ __Real arm__:
 </p>
 
 <p align="center">
-<img src="https://github.com/IOJVision/PhantomX-Pincher-Vibot-2019-/blob/master/Images/Calibration/TbaleHeight.jpg" align ="middle" width="60%" height="60%" title="tablelevel" style="transform:rotate(90deg);">
+<img src="https://github.com/IOJVision/PhantomX-Pincher-Vibot-2019-/blob/master/Images/Calibration/TableHeight.jpg" align ="middle" width="60%" height="60%" title="tablelevel" style="transform:rotate(90deg);">
 </p>
      
 * After all the test and set up has been done correctly, run the calibration program
