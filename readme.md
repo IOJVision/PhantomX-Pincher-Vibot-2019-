@@ -132,7 +132,7 @@ __Real arm__:
      __Make sure to have printed Calibration checkerboard (7x6 27mm) __: 
      click here to download the checkerboard: [checkerboard](https://github.com/IOJVision/PhantomX-Pincher-Vibot-2019-/blob/master/Images/Calibration/check_7x6_27mm.pdf)
      
-     <p align="center">
+<p align="center">
 <img src="https://github.com/IOJVision/PhantomX-Pincher-Vibot-2019-/blob/master/Images/Calibration/Screenshot%20from%202019-03-25%2014:33:05.png" align ="middle" width="60%" height="60%" title="checkerboard">
 </p>
 
@@ -161,7 +161,7 @@ __Real arm__:
           
 * Firstly, it will pop out the image view of the calibration pattern on the checkerboard if it’s able to detect it and the arm servo controller. 
 
-  <p align="center">
+<p align="center">
 <img src="https://github.com/IOJVision/PhantomX-Pincher-Vibot-2019-/blob/master/Images/Calibration/Screenshot%20from%202019-03-19%2011:21:36.png" align ="middle" width="60%" height="60%" title="checkerboard">
 </p>
 
